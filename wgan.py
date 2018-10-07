@@ -15,15 +15,16 @@ BETA1 = 0
 BETA2 = 0.9
 LAMBDA = 10
 DEVICE = '/gpu:0'
-SAMPLES_DIR = 'result/samples/2'
+SAMPLES_DIR = 'result/samples/4'
 DATA_DIR = '../data/pokemon/pokemon_64'
-LOG_DIR = 'log/train/2'
-MODELS_DIR = 'result/models/2'
+LOG_DIR = 'log/train/4'
+MODELS_DIR = 'result/models/4'
 # ------------------------------ #
 
 
 if __name__ == '__main__':
-    with tf.Session(config=tf.ConfigProto(allow_soft_placement=True)) as session:
+    config = tf.ConfigProto(allow_soft_placement=True)
+    with tf.Session(config=config) as session:
         real_data_conv = tf.placeholder(tf.int32, shape=[BATCH_SIZE, 3, 64, 64])
 
         with tf.device(DEVICE):
@@ -99,7 +100,7 @@ if __name__ == '__main__':
         gen = inf_dataset_gen()
         for it in range(ITERS):
             if it > 0:
-                _ = session.run(gen_train_op)
+                session.run(gen_train_op)
 
             for i in range(CRITIC_ITERS):
                 _data = next(gen)
